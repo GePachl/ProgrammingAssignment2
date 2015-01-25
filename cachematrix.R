@@ -1,34 +1,56 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
+## function makeCacheMatrix
+## creates and stores a matrix, then creates the inverse version and caches it for later use by other functions and programs 
+## also implements and returns back a list of several subfunctions set_matrix, get_matrix, set_inverse, get_inverse 
 
 makeCacheMatrix <- function(x = matrix()) {
+      
       matrix_inverse <- NULL
+      
+      ## creates and stores a matrix      
       set_matrix <- function(y) {
             x <<- y
             matrix_inverse <<- NULL
       }
+      ## reads the created matrix - only for looking up, if matrix is created
       get_matrix <- function() x
+      
+      ## now main execution - the matrix will be transformed be the solve function to it s inverse form and cached in as object matrix_inverse
       set_inverse <- function(solve) matrix_inverse <<- solve
+      
+      ## reads the invers matrix - only for looking up, if it is created
       get_inverse <- function() matrix_inverse
+      
+      ## returns back a list of the following subfunctions set_matrix, get_matrix, set_inverse, get_inverse
       list(set_matrix = set_matrix, get_matrix = get_matrix,
            set_inverse = set_inverse,
            get_inverse = get_inverse)      
 }
 
 
-## Write a short comment describing this function
+## function cacheSolve
+## ## Return a matrix that is the inverse of 'x' and stores it in the cache if not already stored there
 
 cacheSolve <- function(x, ...) {
-      ## Return a matrix that is the inverse of 'x'
+      
+      ## first trying to look up if already cached inverse matrix available
       matrix_inverse <- x$get_inverse()
+      
       if(!is.null(matrix_inverse)) {
             message("getting cached data")
+            
+      ## if cached inverse matrix is found, give it back and end the processing here             
             return(matrix_inverse)
       }
+      
+      ## if not available then calculate the inverted matrix new and return it       
       data <- x$get_inverse()
+      
+      ## process function solve to get the inverse form of matrix
       matrix_inverse <- solve(data, ...)
+      
+      ## save the inverse matrix in the cache
       x$set_inverse(matrix_inverse)
+      
+      ## return the inverse matrix
       matrix_inverse      
 }
