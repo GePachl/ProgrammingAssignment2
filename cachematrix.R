@@ -42,12 +42,12 @@ cacheSolve <- function(x, ...) {
             return(mat_inv)
       }
       
-      ## otherwise process the function 'solve' to get the inverse object 'mat_inv' of the base matrix of 'X'
+      ## otherwise process the function 'solve' to get the inverse object 'mat_inv' of the base matrix of 'x'
       mat_inv <- solve(x$get_matrix())
       
       ## save the inverse matrix in the cache
       x$set_matrix_inv(mat_inv)
       
       ## return the inverse matrix data
-      mat_inv      
+      return(mat_inv)      
 }
