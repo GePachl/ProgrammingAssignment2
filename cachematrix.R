@@ -14,13 +14,13 @@ makeCacheMatrix <- function(x = matrix()) {
       ## reads the created matrix - only for looking up, if matrix is created
       get_matrix <- function() x
       
-      ## now main execution - the matrix will be transformed be the solve function to it s inverse form and cached in as object matrix_inverse
+      ## now main execution - the matrix will be transformed by the 'solve' function to its inverse form and cached in object 'matrix_inverse'
       set_inverse <- function(solve) matrix_inverse <<- solve
       
-      ## reads the invers matrix - only for looking up, if it is created
+      ## reads the inverse matrix - only for looking up, if it is created
       get_inverse <- function() matrix_inverse
       
-      ## returns back a list of the following subfunctions set_matrix, get_matrix, set_inverse, get_inverse
+      ## returns back a list of the following subfunctions 'set_matrix', 'get_matrix', 'set_inverse', 'get_inverse'
       list(set_matrix = set_matrix, get_matrix = get_matrix,
            set_inverse = set_inverse,
            get_inverse = get_inverse)      
@@ -32,9 +32,8 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
       
-      ## first trying to look up if already cached inverse matrix available
+      ## first trying to look up, if inverse matrix of 'x' is available in the cache
       matrix_inverse <- x$get_inverse()
-      
       if(!is.null(matrix_inverse)) {
             message("getting cached data")
             
@@ -42,10 +41,10 @@ cacheSolve <- function(x, ...) {
             return(matrix_inverse)
       }
       
-      ## if not available then go on ... get the matrix and assign it to obejct variable data      
+      ## if not available then go on ... get the matrix and assign it to object variable data      
       data <- x$get_inverse()
       
-      ## process the function solve to get the inverse form of matrix "data"
+      ## process the function 'solve' to get the inverse form of matrix 'data'
       matrix_inverse <- solve(data, ...)
       
       ## save the inverse matrix in the cache
