@@ -1,29 +1,30 @@
-## function: makeCacheMatrix
-## creates and stores a matrix, then creates the inverse version and caches it for later use by other functions and programs 
-## also implements and returns back a list of several subfunctions set_matrix, get_matrix, set_inverse, get_inverse 
+## function: makeCacheMatrix 
+## creates and stores a base matrix and creates an object 'mat_inv' for storing its inverse matrix ()
+## also implements and returns a list of several subfunctions set_matrix, get_matrix, set_matrix_inv, get_matrix_inv 
 
 makeCacheMatrix <- function(x = matrix()) {
       
-      matrix_inverse <- NULL
+      mat_inv <- NULL
       
-      ## creates and stores a matrix      
+      ## creates a matrix      
       set_matrix <- function(y) {
             x <<- y
-            matrix_inverse <<- NULL
+            mat_inv <<- NULL
       }
-      ## reads the created matrix - only for looking up, if matrix is created
-      get_matrix <- function() x
+      ## subfunction: read base matrix values of x - check if matrix x is created with the values of 'mat_dat'
+      get_matrix <- function() {x}
       
-      ## now main execution - the matrix will be transformed by the 'solve' function to its inverse form and cached in object 'matrix_inverse'
-      set_inverse <- function(solve) matrix_inverse <<- solve
+      ## subfunction: creates object 'mat_inv' for storing inverse matrix
+      set_matrix_inv <- function(solve) {mat_inv <<- solve}
       
-      ## reads the inverse matrix - only for looking up, if it is created
-      get_inverse <- function() matrix_inverse
-      
-      ## returns back a list of the following subfunctions 'set_matrix', 'get_matrix', 'set_inverse', 'get_inverse'
-      list(set_matrix = set_matrix, get_matrix = get_matrix,
-           set_inverse = set_inverse,
-           get_inverse = get_inverse)      
+      ## subfunction: reads the object 'mat_inv' - only for looking up, if the object is created
+      get_matrix_inv <- function() {mat_inv}
+            
+      ## returns back a list of the following subfunctions 'set_matrix', 'get_matrix', 'set_matrix_inv', 'get_matrix_inv'
+      list( set_matrix = set_matrix, 
+            get_matrix = get_matrix,
+            set_matrix_inv = set_matrix_inv, 
+            get_matrix_inv = get_matrix_inv )      
 }
 
 
@@ -32,24 +33,23 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
       
-      ## first trying to look up, if inverse matrix of 'x' is available in the cache
-      matrix_inverse <- x$get_inverse()
-      if(!is.null(matrix_inverse)) {
+      ## first trying to look up, if inverse matrix of 'x' is already available in the cache
+      mat_inv <- x$get_matrix_inv()
+      if(!is.null(mat_inv)) {
             message("getting cached data")
             
       ## if cached inverse matrix is found, give it back and the processing ends here             
-            return(matrix_inverse)
+            return(mat_inv)
       }
       
-      ## if not available then go on ... get the matrix and assign it to object variable data      
-      data <- x$get_inverse()
-      
-      ## process the function 'solve' to get the inverse form of matrix 'data'
-      matrix_inverse <- solve(data, ...)
+      ## otherwise process the function 'solve' to get the inverse object 'mat_inv' of the base matrix 'x$get_matrix()'
+      mat_inv <- solve(x$get_matrix())
       
       ## save the inverse matrix in the cache
-      x$set_inverse(matrix_inverse)
+      x$set_matrix_inv(mat_inv)
+      
+      message("setting inverse data matrix and caching it")
       
       ## return the inverse matrix
-      matrix_inverse      
+      mat_inv      
 }
